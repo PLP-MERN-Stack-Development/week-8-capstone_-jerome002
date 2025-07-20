@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function Login({ onLogin }) {
-  const [form, setForm] = useState({ email: "", password: "" });
+export default function Register() {
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -13,19 +13,28 @@ export default function Login({ onLogin }) {
     e.preventDefault();
     setMessage("");
     try {
-      const res = await axios.post("/api/auth/login", form);
-      onLogin(res.data.user); // Send user info to parent
-      setMessage("Login successful.");
+      const res = await axios.post("/api/auth/register", form);
+      setMessage("Registration successful. You can now log in.");
+      setForm({ name: "", email: "", password: "" });
     } catch (err) {
-      setMessage(err.response?.data?.message || "Login failed.");
+      setMessage(err.response?.data?.message || "Registration failed.");
     }
   };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
+      <h2 className="text-xl font-bold mb-4">Register</h2>
       {message && <p className="mb-2 text-sm text-red-500">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={form.name}
+          onChange={handleChange}
+          required
+          className="w-full border px-3 py-2 rounded"
+        />
         <input
           type="email"
           name="email"
@@ -46,9 +55,9 @@ export default function Login({ onLogin }) {
         />
         <button
           type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded"
+          className="w-full bg-blue-600 text-white py-2 rounded"
         >
-          Login
+          Register
         </button>
       </form>
     </div>

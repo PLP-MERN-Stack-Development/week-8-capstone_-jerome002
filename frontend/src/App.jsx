@@ -1,59 +1,30 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
 import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
-
-// Example placeholders for future pages
-// import Orders from "./pages/Orders";
-// import Tables from "./pages/Tables";
-// import NotFound from "./pages/NotFound";
+import Orders from "./pages/Orders";
+import Menu from "./pages/Menu";
+import Tables from "./pages/Tables";
+import Staff from "./pages/Staff";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
+  const [username] = useState("Jane Doe");
+  const handleLogout = () => alert("Logged out!");
+
   return (
-    // Router here is optional if you already wrap your app with BrowserRouter in main.jsx
-    // <Router>
-      <Routes>
-        {/* Redirect root path to login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-
-        {/* Protected routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Example for additional protected routes */}
-        {/*
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute>
-              <Orders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <ProtectedRoute>
-              <Tables />
-            </ProtectedRoute>
-          }
-        />
-        */}
-
-        {/* Catch-all for undefined routes */}
-        {/* <Route path="*" element={<NotFound />} /> */}
-      </Routes>
-    // </Router>
+    <Routes>
+      <Route element={<Layout username={username} onLogout={handleLogout} />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/tables" element={<Tables />} />
+        <Route path="/staff" element={<Staff />} />
+      </Route>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
   );
 }
 
