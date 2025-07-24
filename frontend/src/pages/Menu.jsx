@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { backendURL } from "../config"
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Menu() {
   const [menu, setMenu] = useState([]);
@@ -11,7 +11,7 @@ export default function Menu() {
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/api/menu`);
+        const res = await axios.get(`${backendURL}/api/menu`);
         setMenu(res.data);
       } catch (err) {
         console.error("Failed to fetch menu:", err);

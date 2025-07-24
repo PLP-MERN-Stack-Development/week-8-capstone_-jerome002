@@ -1,7 +1,7 @@
 // src/pages/Inventory.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import backendURL from "../config"; // Add this line
+import { backendURL } from "../config"; // Add this line
 
 function Inventory() {
   const [items, setItems] = useState([]);
