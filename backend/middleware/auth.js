@@ -1,16 +1,40 @@
+const express = require("express");
+const router = express.Router();
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-module.exports = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1]; // Bearer <token>
-
-  if (!token) return res.status(401).json({ message: "No token provided" });
+// Login Route
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
-    next();
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).json({ message: "Invalid email or password" });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid email or password" });
+
+    const token = jwt.sign({ id: user._id, name: user.name }, JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (err) {
-    res.status(401).json({ message: "Invalid token" });
+    console.error(err);
+    res.status(500).send("Server error");
   }
-};
+});
+
+module.exports = router;

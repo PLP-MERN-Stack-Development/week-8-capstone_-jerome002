@@ -1,23 +1,25 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Navbar() {
-  const { user, logout } = useContext(AuthContext);
+function Navbar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
-      <div className="md:hidden font-bold text-lg">Restaurant</div>
-      <div className="flex items-center gap-4 ml-auto">
-        <span className="text-sm text-gray-700">
-          Hello, <span className="font-medium">{user?.name}</span>
-        </span>
-        <button
-          onClick={logout}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
-        >
-          Logout
-        </button>
+    <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
+      <div className="text-xl font-bold">Restaurant System</div>
+      <div className="space-x-4">
+        <Link to="/dashboard" className="hover:underline">Dashboard</Link>
+        <Link to="/menu" className="hover:underline">Menu</Link>
+        <Link to="/staff" className="hover:underline">Staff</Link>
+        <button onClick={handleLogout} className="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</button>
       </div>
-    </header>
+    </nav>
   );
 }
+
+export default Navbar;

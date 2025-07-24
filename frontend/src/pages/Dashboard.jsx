@@ -1,52 +1,55 @@
-import React, { useEffect, useState, useContext } from "react";
-import DashboardCard from "../components/UI/DashboardCard";
-import { FaDollarSign, FaConciergeBell, FaChair } from "react-icons/fa";
-import { fetchOrders, fetchTables } from "../services/api";
-import { AuthContext } from "../context/AuthContext"; 
+// src/pages/Dashboard.jsx
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-  const [orders, setOrders] = useState([]);
-  const [tables, setTables] = useState([]);
-  const { user } = useContext(AuthContext);
+function Dashboard({ user, setUser }) {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchOrders().then(res => setOrders(res.data));
-    fetchTables().then(res => setTables(res.data));
-  }, []);
-
-  const totalSales = orders.reduce((sum, order) => sum + (order.total || 0), 0);
-  const activeOrders = orders.filter(o => o.status !== "completed" && o.status !== "cancelled").length;
-  const availableTables = tables.filter(t => t.status === "available").length;
-
-  if (!user) return <div>Loading...</div>;
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <DashboardCard
-          title="Active Orders"
-          value={activeOrders}
-          icon={<FaConciergeBell />}
-        />
-        <DashboardCard
-          title="Available Tables"
-          value={availableTables}
-          icon={<FaChair />}
-        />
-        {user.role === "admin" && (
-          <DashboardCard
-            title="Total Sales"
-            value={`$${totalSales}`}
-            icon={<FaDollarSign />}
-          />
-        )}
+    <div className="min-h-screen bg-gray-100 p-6">
+      <header className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">Hello, {user?.username}</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+        >
+          Logout
+        </button>
+      </header>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <Link
+          to="/menu"
+          className="bg-blue-600 text-white p-6 rounded shadow hover:bg-blue-700 text-center"
+        >
+          Menu
+        </Link>
+        <Link
+          to="/inventory"
+          className="bg-green-600 text-white p-6 rounded shadow hover:bg-green-700 text-center"
+        >
+          Inventory
+        </Link>
+        <Link
+          to="/staff"
+          className="bg-purple-600 text-white p-6 rounded shadow hover:bg-purple-700 text-center"
+        >
+           Staff
+        </Link>
       </div>
-      <div className="mt-8 text-gray-400 text-center">
-        {user.role === "admin"
-          ? "More admin metrics and charts coming soon..."
-          : "Contact your admin for more features."}
-      </div>
+
+      <section className="mt-10 bg-white p-6 rounded shadow">
+        <h2 className="text-xl font-semibold mb-3">📊 Reports</h2>
+        <p>Daily sales, inventory levels, and staff attendance overview will be here.</p>
+      </section>
     </div>
   );
 }
+
+export default Dashboard;

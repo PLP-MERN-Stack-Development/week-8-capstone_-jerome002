@@ -8,4 +8,4 @@ const menuItemSchema = new mongoose.Schema({
   available: { type: Boolean, default: true },
 });
 
-module.exports = mongoose.model("MenuItem", menuItemSchema);
+module.exports = mongoose.model("MenuItem", menuItemSchema); 

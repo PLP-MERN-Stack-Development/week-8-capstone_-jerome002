@@ -1,9 +1,12 @@
+// frontend/src/pages/Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function Login({ onLogin }) {
+const Login = ({ setUser }) => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -11,46 +14,60 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
     try {
-      const res = await axios.post("/api/auth/login", form);
-      onLogin(res.data.user); // Send user info to parent
-      setMessage("Login successful.");
+      const res = await axios.post("http://localhost:5000/api/auth/login", form);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      setUser(res.data.user);
+      navigate("/dashboard");
     } catch (err) {
-      setMessage(err.response?.data?.message || "Login failed.");
+      setError(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
-      {message && <p className="mb-2 text-sm text-red-500">{message}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          className="w-full border px-3 py-2 rounded"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-          className="w-full border px-3 py-2 rounded"
-        />
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded"
-        >
-          Login
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-200"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition"
+          >
+            Sign In
+          </button>
+        </form>
+        <p className="mt-4 text-center text-sm">
+          Don't have an account?{" "}
+          <a href="/register" className="text-indigo-600 hover:underline">
+            Register here
+          </a>
+        </p>
+      </div>
     </div>
   );
-}
+};
+
+export default Login;

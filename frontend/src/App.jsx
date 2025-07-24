@@ -1,30 +1,68 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
-import Dashboard from "./pages/Dashboard";
-import Orders from "./pages/Orders";
-import Menu from "./pages/Menu";
-import Tables from "./pages/Tables";
-import Staff from "./pages/Staff";
+// src/App.jsx
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Menu from "./pages/Menu";
+import Inventory from "./pages/Inventory";
+import Staff from "./pages/Staff";
+
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [username] = useState("Jane Doe");
-  const handleLogout = () => alert("Logged out!");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) {
+      setUser(JSON.parse(stored));
+    }
+  }, []);
 
   return (
-    <Routes>
-      <Route element={<Layout username={username} onLogout={handleLogout} />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/tables" element={<Tables />} />
-        <Route path="/staff" element={<Staff />} />
-      </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard user={user} setUser={setUser} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/menu"
+          element={
+            <ProtectedRoute>
+              <Menu />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/inventory"
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/staff"
+          element={
+            <ProtectedRoute>
+              <staff />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 

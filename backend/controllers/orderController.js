@@ -13,7 +13,7 @@ exports.getAll = async (req, res, next) => {
 // Create order
 exports.create = async (req, res, next) => {
   try {
-    const order = new Order({ ...req.body, staff: req.user._id });
+    const order = new Order({ ...req.body, staff: req.user.id });
     await order.save();
     res.status(201).json(order);
   } catch (err) {

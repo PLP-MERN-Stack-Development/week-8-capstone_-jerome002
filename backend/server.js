@@ -6,11 +6,13 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
+const inventoryRoutes = require("./routes/inventory");
 
 const authRoutes = require("./routes/auth");
 const menuRoutes = require("./routes/menu");
 const orderRoutes = require("./routes/orders");
 const tableRoutes = require("./routes/tables");
+const staffRoutes = require("./routes/staff");
 
 const app = express();
 
@@ -28,6 +30,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/menu", menuRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/tables", tableRoutes);
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/staff", staffRoutes);
+
 
 // Error handler (should be last)
 app.use(errorHandler);
