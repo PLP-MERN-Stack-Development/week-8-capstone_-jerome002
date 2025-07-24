@@ -1,2 +1,2 @@
-const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-export default backendURL;
+export const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
