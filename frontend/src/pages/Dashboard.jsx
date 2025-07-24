@@ -44,10 +44,6 @@ function Dashboard({ user, setUser }) {
         </Link>
       </div>
 
-      <section className="mt-10 bg-white p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-3">📊 Reports</h2>
-        <p>Daily sales, inventory levels, and staff attendance overview will be here.</p>
-      </section>
     </div>
   );
 }

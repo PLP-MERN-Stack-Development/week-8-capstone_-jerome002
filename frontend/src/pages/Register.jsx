@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { backendURL } from '../config';
 
 const Register = ({ onRegister }) => {
   const [formData, setFormData] = useState({
@@ -10,13 +11,13 @@ const Register = ({ onRegister }) => {
   });
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/register", formData);
+      await axios.post(`${backendURL}/api/auth/register`, formData);
       alert("Registration successful! You can now login.");
       onRegister();
     } catch (err) {

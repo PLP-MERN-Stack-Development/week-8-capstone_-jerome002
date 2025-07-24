@@ -1,6 +1,7 @@
 // src/pages/Inventory.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import backendURL from "../config"; // Add this line
 
 function Inventory() {
   const [items, setItems] = useState([]);
@@ -12,7 +13,7 @@ function Inventory() {
   }, []);
 
   const fetchItems = async () => {
-    const res = await axios.get("http://localhost:5000/api/inventory");
+    const res = await axios.get(`${backendURL}/api/inventory`);
     setItems(res.data);
   };
 
@@ -24,9 +25,9 @@ function Inventory() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (editingItem) {
-      await axios.put(`http://localhost:5000/api/inventory/${editingItem._id}`, formData);
+      await axios.put(`${backendURL}/api/inventory/${editingItem._id}`, formData);
     } else {
-      await axios.post("http://localhost:5000/api/inventory", formData);
+      await axios.post(`${backendURL}/api/inventory`, formData);
     }
     setFormData({ name: "", quantity: "", price: "" });
     setEditingItem(null);
@@ -39,7 +40,7 @@ function Inventory() {
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/inventory/${id}`);
+    await axios.delete(`${backendURL}/api/inventory/${id}`);
     fetchItems();
   };
 

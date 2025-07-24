@@ -1,7 +1,7 @@
-// frontend/src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import backendURL from "../config";
 
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Login = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
+      const res = await axios.post(`${backendURL}/api/auth/login`, form);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       setUser(res.data.user);
       navigate("/dashboard");
