@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { backendURL } from '../config';
+import {backendURL} from '../config';
 
 const Register = ({ onRegister }) => {
   const [formData, setFormData] = useState({
