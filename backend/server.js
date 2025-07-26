@@ -20,7 +20,8 @@ const app = express();
 app.use(helmet());
 app.use(cors()); // <--- Enable CORS for all origins by default
 app.use(morgan("dev"));
-app.use(bodyParser.json());
+app.use(express.json());
+
 
 // Connect to MongoDB
 connectDB();
@@ -32,6 +33,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/tables", tableRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/staff", staffRoutes);
+
 
 
 // Error handler (should be last)
