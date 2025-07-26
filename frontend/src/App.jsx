@@ -6,8 +6,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Menu from "./pages/Menu";
+import Order from "./pages/Orders";
 import Inventory from "./pages/Inventory";
 import Staff from "./pages/Staff";
+import Layout from "./Layout"; // from a page file in /pages
+
 
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -32,33 +35,57 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute>
+            <Layout>
+              <ProtectedRoute>
               <Dashboard user={user} setUser={setUser} />
             </ProtectedRoute>
+            </Layout>
+
           }
         />
         <Route
           path="/menu"
           element={
-            <ProtectedRoute>
+            <Layout>
+              <ProtectedRoute>
               <Menu />
             </ProtectedRoute>
+            </Layout>
+            
           }
+        />
+        <Route
+          path="/order"
+          element={
+            <Layout>
+              <ProtectedRoute>
+            <Order/>
+          </ProtectedRoute>
+            </Layout>
+          
+         
+           }
         />
         <Route
           path="/inventory"
           element={
+            <Layout>
             <ProtectedRoute>
               <Inventory />
             </ProtectedRoute>
+            </Layout>
+            
           }
         />
         <Route
           path="/staff"
           element={
-            <ProtectedRoute>
-              <staff />
+            <Layout>
+              <ProtectedRoute>
+              <Staff />
             </ProtectedRoute>
+            </Layout>
+            
           }
         />
       </Routes>

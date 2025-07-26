@@ -31,6 +31,13 @@ function Dashboard({ user, setUser }) {
           Menu
         </Link>
         <Link
+          to="/order"
+          className="bg-yellow-600 text-white p-6 rounded shadow hover:bg-yellow-700 text-center"
+>
+          Order
+        </Link>
+
+        <Link
           to="/inventory"
           className="bg-green-600 text-white p-6 rounded shadow hover:bg-green-700 text-center"
         >
